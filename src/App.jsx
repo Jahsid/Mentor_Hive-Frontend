@@ -1,17 +1,52 @@
-import React from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Home from './pages'
+// import React from 'react'
+// import { BrowserRouter, Routes, Route } from 'react-router-dom'
+// import Home from './pages/index'
 
-const App = () => {
+// const App = () => {
+//   return (
+//     <>
+//       <BrowserRouter>
+//         <Routes>
+//           <Route path='/' element={<Home/>}/>
+//         </Routes>
+//       </BrowserRouter>
+//     </>
+//   )
+// }
+
+// export default App
+
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import routes from "./routes";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+function App() {
   return (
-    <>
+    <div className="mx-auto max-w-screen-3xl">
+      <Toaster position="top-center" />
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Home/>}/>
+          {routes.map((route) => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={<RouteElement route={route} />}
+            />
+          ))}
         </Routes>
       </BrowserRouter>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+const RouteElement = ({ route }) => {
+  return route.isProtected ? (
+    <ProtectedRoute>{route.element}</ProtectedRoute>
+  ) : (
+    <>{route.element}</>
+  );
+};
+
+export default App;
